@@ -1,0 +1,39 @@
+[
+  {
+    "accessGroup": "Administrators",
+    "classicInfrastructurePermissions": {
+      "permissionSet": "Super_User",
+      "permissions": [],
+      "devices": [
+        {
+          "allDevices": "false"
+        }
+      ],
+      "vpnAccess": "true"
+    },
+    "cloudFoundryPermissions": {
+      "permissions": [
+        {
+          "pattern": "ORG/SPACE",
+          "roles": ["Auditor", "Developer"]
+        }
+      ]
+    }
+  },
+  {
+    "accessGroup": "Watson_Team",
+    "classicInfrastructurePermissions": {
+      "permissionSet": "None",
+      "permissions": ["MONITORING_MANAGE"],
+      "devices": [
+        {
+          "partialName": "my"
+        },
+        {
+          "name": "teste.mydomain"
+        }
+      ],
+      "vpnAccess": "false"
+    }
+  }
+]
