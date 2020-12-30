@@ -23,7 +23,7 @@
   {
     "accessGroup": "Watson_Team",
     "classicInfrastructurePermissions": {
-      "permissionSet": "None",
+      "permissionSet": "View_User",
       "permissions": ["MONITORING_MANAGE"],
       "devices": [
         {
@@ -33,7 +33,7 @@
           "name": "teste.mydomain"
         }
       ],
-      "vpnAccess": "false"
+      "vpnAccess": "true"
     }
   }
 ]

@@ -291,6 +291,8 @@ utils.generateCommandsForUser = function (userEmail) {
     let userDevices = []
     let deniedPermissions = []
 
+    let vpnAccess = "false"
+
     for (const group of groups) {
 
         const policyForThisGroup = policiesByAccessGroup.filter(x => x.accessGroup == group)
@@ -332,6 +334,10 @@ utils.generateCommandsForUser = function (userEmail) {
                 utils.mergeDevices(deviceList, userDevices, group);
             }
 
+            if(policyForThisGroup[0].classicInfrastructurePermissions.vpnAccess == "true") {
+                vpnAccess = "true"
+            }
+
         }
     }
 
@@ -365,6 +371,9 @@ utils.generateCommandsForUser = function (userEmail) {
     console.log(`# ADD all devices`)
     console.log(`\nibmcloud sl call-api SoftLayer_User_Customer addBulkVirtualGuestAccess --init ${user.sl_user[0].id} --parameters "[[${vsiDevices.map(x => parseInt(x.id))}]]" && echo ""`)
     console.log(`\nibmcloud sl call-api SoftLayer_User_Customer addBulkHardwareAccess --init ${user.sl_user[0].id} --parameters "[[${hardwareDevices.map(x => parseInt(x.id))}]]" && echo ""`)
+
+    console.log(`# VPN OPTION`)
+    console.log(`\nibmcloud sl call-api SoftLayer_User_Customer editObject --init ${user.sl_user[0].id} --parameters '[{"sslVpnAllowedFlag" : ${vpnAccess}}]' && echo ""`)
 
 }
 
