@@ -1,8 +1,10 @@
 const utils = require('./utils')
 
-const email = process.argv[2]
+const emails = process.argv.slice(2)
+
+for(const email of emails) {
+    utils.generateCommandsForUser(email)
+}
 
 
-utils.generateCommandsForUser(email)
-
-console.log("# ************************* END-USER ********************")
+console.log("# ************************* END-OF-SCRIPT ********************")
