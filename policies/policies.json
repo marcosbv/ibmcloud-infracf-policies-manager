@@ -12,11 +12,19 @@
       "vpnAccess": "true"
     },
     "cloudFoundryPermissions": {
-      "permissions": [
-        {
-          "pattern": "ORG/SPACE",
-          "roles": ["Auditor", "Developer"]
-        }
+      "orgs" : [
+          {
+            "allOrgs" : "true",
+            "manager" : true,
+            "auditor" : false,
+            "spaces" : [
+                {
+                   "allSpaces" : "true",
+                   "developer" : true,
+                   "manager"   : true
+                }
+            ]
+          }
       ]
     }
   },
@@ -34,6 +42,28 @@
         }
       ],
       "vpnAccess": "true"
+    },
+    "cloudFoundryPermissions" : {
+        "orgs" : [
+           {
+             "name" : "marcos.viera@gmail.com",
+             "auditor" : false,
+             "billing_manager" : false,
+             "spaces" : [
+                {
+                  "name" : "dev",
+                  "developer" : false,
+                  "manager"   : false,
+                  "auditor"   : false
+                }
+             ]
+           },
+           {
+             "partialName" : "Bradesco",
+             "auditor" : true,
+             "spaces" : []
+           }
+        ]
     }
   }
 ]
