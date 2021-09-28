@@ -1,0 +1,14 @@
+//Permissoes Infra Classica para os usuarios do grupo de acesso GA_DITI_SOC_PR_F_01
+ {
+    "accessGroup": "GA_DITI_SOC_PR_F_01",
+    "classicInfrastructurePermissions": {
+      "permissionSet": "Basic_User",
+      "permissions": [],
+      "devices": [
+        {
+          "partialName": "ic-dmz-ips-01"
+        }
+      ],
+      "vpnAccess": "true"
+    }
+ }
