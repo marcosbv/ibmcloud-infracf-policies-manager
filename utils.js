@@ -3,6 +3,7 @@
  */
 let utils = {}
 
+const fs = require('fs');
 
 /**
  * Load users into a Map object
@@ -382,7 +383,7 @@ utils.generateCommandsForUser = function (userEmail) {
     const usersMap = utils.loadUsers()
     const devicesMap = utils.loadDevices()
     const accessGroups = utils.loadAccessGroups()
-    const policiesByAccessGroup = require('./policies/policies.json')
+    const policiesByAccessGroup = utils.loadJSONPolicies()
     const user = usersMap.get(userEmail)
 
     if (user == null) {
@@ -543,8 +544,28 @@ utils.loadCFPoliciesForUser = function (cfOrgs, email) {
     }
 }
 
+utils.loadJSONPolicies = function() {
+    const policiesFolderFiles = fs.readdirSync('./policies');
+    let policies = []
+    for(const file of policiesFolderFiles) {
+        if(file.indexOf('.json') >= file.length - 5) {
+            const p = require(`./policies/${file}`);
+            if(p.accessGroup) {
+                policies.push(p);
+            } else {
+                policies = policies.concat(p);
+            }
+           
+        }
+    }
+
+    return policies;
+
+}
 utils.loadCFPolicyRules = function (cfOrgs) {
-    const policies = require('./policies/policies.json')
+    //const policies = require('./policies/policies.json')
+
+    const policies = utils.loadJSONPolicies();
 
     const expandedPolicies = []
 
@@ -759,9 +780,9 @@ utils.generateCFCommandsForUser = function (email) {
                 if(spacePolicies.length > 0) {
                     console.log(`# ACTION: MERGE SPACE POLICIES`)
                     const sp = spacePolicies[0]
-                    console.log(`# Auditor: ${value.auditor.value} (${value.auditor.groups.join(",")})`)
+                    console.log(`# Auditor: ${val.auditor.value} (${val.auditor.groups.join(",")})`)
                     if(sp.auditor != val.auditor.value) {
-                        console.log(`ibmcloud account space-role-${value.auditor.value == true ? "set" : "unset"} ${email} ${value.name} ${key2} SpaceAuditor`)
+                        console.log(`ibmcloud account space-role-${val.auditor.value == true ? "set" : "unset"} ${email} ${value.name} ${key2} SpaceAuditor`)
                     }
         
                     console.log(`# Manager: ${val.manager.value} (${val.manager.groups.join(",")})`)
@@ -774,19 +795,19 @@ utils.generateCFCommandsForUser = function (email) {
                     }
                 } else {
                     console.log(`# ACTION: ADD SPACE POLICIES`)
-                    console.log(`# Auditor: ${val3.auditor.value} (${val.auditor.groups.join(",")})`)
+                    console.log(`# Auditor: ${val.auditor.value} (${val.auditor.groups.join(",")})`)
                     if(true == val.auditor.value) { 
-                        console.log(`ibmcloud account space-role-set ${email} ${val.name} ${key3} SpaceAuditor`)
+                        console.log(`ibmcloud account space-role-set ${email} ${val.name} ${key2} SpaceAuditor`)
                     }
     
-                    console.log(`# Manager: ${val3.manager.value} (${val.manager.groups.join(",")})`)
+                    console.log(`# Manager: ${val.manager.value} (${val.manager.groups.join(",")})`)
                     if(true == val.manager.value) {
-                        console.log(`ibmcloud account space-role-set ${email} ${val.name} ${key3} SpaceManager`)
+                        console.log(`ibmcloud account space-role-set ${email} ${val.name} ${key2} SpaceManager`)
                     }
         
-                    console.log(`# Developer: ${val3.developer.value} (${val.developer.groups.join(",")})`)
+                    console.log(`# Developer: ${val.developer.value} (${val.developer.groups.join(",")})`)
                     if(true == val.developer.value) {
-                        console.log(`ibmcloud account space-role-set ${email} ${val.name} ${key3} SpaceDeveloper`)
+                        console.log(`ibmcloud account space-role-set ${email} ${val.name} ${key2} SpaceDeveloper`)
                     }
                 }
             }) 
